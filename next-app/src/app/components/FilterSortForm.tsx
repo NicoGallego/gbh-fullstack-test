@@ -28,7 +28,6 @@ const FilterSortForm = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Gère les changements de filtres pour les cases à cocher (manufacturers)
   const handleManufacturerChange = (manufacturer: string) => {
     const updatedManufacturers = selectedManufacturers.includes(manufacturer)
       ? selectedManufacturers.filter((item) => item !== manufacturer)
@@ -38,13 +37,11 @@ const FilterSortForm = ({
     onFilterChange({ manufacturer: updatedManufacturers });
   };
 
-  // Efface toutes les marques sélectionnées
   const clearManufacturerFilter = () => {
     setSelectedManufacturers([]);
     onFilterChange({ manufacturer: [] });
   };
 
-  // Gère les changements des autres filtres (type, year, sort)
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -57,13 +54,11 @@ const FilterSortForm = ({
     });
   };
 
-  // Efface le filtre d'année
   const clearYearFilter = () => {
     setYear('');
     onFilterChange({ year: undefined });
   };
 
-  // Fermer le dropdown si on clique en dehors
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -80,13 +75,12 @@ const FilterSortForm = ({
 
   return (
     <div className="flex flex-wrap gap-4 mb-4">
-      {/* Multiselect pour les marques */}
       <div className="form-control w-full max-w-xs relative" ref={dropdownRef}>
         <div className="relative">
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="input input-bordered w-full text-left"
+            className="input input-bordered w-full text-left truncate"
           >
             {selectedManufacturers.length > 0
               ? selectedManufacturers.join(', ')
@@ -122,7 +116,6 @@ const FilterSortForm = ({
         </div>
       </div>
 
-      {/* Filtre pour le type de véhicule */}
       <div className="form-control w-full max-w-xs">
         <select
           name="type"
@@ -138,7 +131,6 @@ const FilterSortForm = ({
         </select>
       </div>
 
-      {/* Filtre pour l'année */}
       <div className="form-control w-full max-w-xs relative">
         <div className="relative">
           <input
@@ -163,7 +155,6 @@ const FilterSortForm = ({
         </div>
       </div>
 
-      {/* Filtre pour le tri */}
       <div className="form-control w-full max-w-xs">
         <select
           name="sort"
