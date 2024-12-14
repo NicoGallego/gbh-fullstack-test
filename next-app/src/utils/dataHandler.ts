@@ -1,25 +1,23 @@
-// src/utils/dataHandler.ts
-
 import vehicles from '../../data/vehicles';
 import { Vehicle } from '../models/vehicle';
 
 /**
- * Récupère tous les véhicules.
+ * get all vehicles.
  */
 export const getAllVehicles = (): Vehicle[] => {
   return vehicles;
 };
 
 /**
- * Récupère un véhicule par son ID.
- * @param id - L'ID du véhicule.
+ * get vehicle by id.
+ * @param id - vehicle id.
  */
 export const getVehicleById = (id: string): Vehicle | undefined => {
   return vehicles.find(vehicle => vehicle.id === id);
 };
 
 /**
- * Récupère une liste unique de fabricants.
+ * get all manufacturers.
  */
 export const getAllManufacturers = (): string[] => {
   const manufacturers = vehicles.map(vehicle => vehicle.manufacturer);

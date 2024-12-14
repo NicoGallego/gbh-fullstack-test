@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useRef, useEffect } from 'react';
 import { VehicleType } from '../../models/vehicle';
+import capitalize from 'lodash/capitalize';
 
 interface FilterSortFormProps {
   manufacturers: string[];
@@ -21,10 +23,10 @@ const FilterSortForm = ({
   onFilterChange,
 }: FilterSortFormProps) => {
   const [year, setYear] = useState<string>('');
-  const [selectedManufacturers, setSelectedManufacturers] = useState<string[]>(
-    []
-  );
+  const [selectedManufacturers, setSelectedManufacturers] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Gère les changements de filtres pour les cases à cocher (manufacturers)
   const handleManufacturerChange = (manufacturer: string) => {
@@ -43,9 +45,7 @@ const FilterSortForm = ({
   };
 
   // Gère les changements des autres filtres (type, year, sort)
-  const handleFilterChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === 'year') {
@@ -63,19 +63,34 @@ const FilterSortForm = ({
     onFilterChange({ year: undefined });
   };
 
+  // Fermer le dropdown si on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="flex flex-wrap gap-4 mb-4">
       {/* Multiselect pour les marques */}
-      <div className="form-control w-full max-w-xs relative">
+      <div className="form-control w-full max-w-xs relative" ref={dropdownRef}>
         <div className="relative">
           <button
             type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="input input-bordered w-full text-left truncate"
+            className="input input-bordered w-full text-left"
           >
             {selectedManufacturers.length > 0
               ? selectedManufacturers.join(', ')
-              : 'Brands'}
+              : 'All Brands'}
           </button>
           {isDropdownOpen && (
             <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-60 overflow-y-auto">
@@ -117,7 +132,7 @@ const FilterSortForm = ({
           <option value="">All Types</option>
           {Object.values(VehicleType).map((type) => (
             <option key={type} value={type}>
-              {type}
+              {capitalize(type)}
             </option>
           ))}
         </select>
