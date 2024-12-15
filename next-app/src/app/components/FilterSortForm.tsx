@@ -74,8 +74,8 @@ const FilterSortForm = ({
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-4 mb-4">
-      <div className="form-control w-full max-w-xs relative" ref={dropdownRef}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div className="form-control w-full relative" ref={dropdownRef}>
         <div className="relative">
           <button
             type="button"
@@ -116,7 +116,7 @@ const FilterSortForm = ({
         </div>
       </div>
 
-      <div className="form-control w-full max-w-xs">
+      <div className="form-control w-full">
         <select
           name="type"
           onChange={handleFilterChange}
@@ -131,7 +131,7 @@ const FilterSortForm = ({
         </select>
       </div>
 
-      <div className="form-control w-full max-w-xs relative">
+      <div className="form-control w-full relative">
         <div className="relative">
           <input
             type="number"
@@ -155,7 +155,7 @@ const FilterSortForm = ({
         </div>
       </div>
 
-      <div className="form-control w-full max-w-xs">
+      <div className="form-control w-full">
         <select
           name="sort"
           onChange={handleFilterChange}

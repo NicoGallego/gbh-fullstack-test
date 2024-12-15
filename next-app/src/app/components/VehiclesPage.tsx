@@ -1,51 +1,59 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Vehicle } from '../../models/vehicle';
-import { getAllVehicles, getAllManufacturers } from '../../utils/dataHandler';
+import React, { useState } from 'react';
 import FilterSortForm from './FilterSortForm';
 import VehicleTable from './VehicleTable';
 import Pagination from './Pagination';
+import { Vehicle } from '../../models/vehicle';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const VehiclesPage = () => {
+interface VehiclesPageProps {
+  vehicles: Vehicle[];
+  manufacturers: string[];
+}
+
+const VehiclesPage = ({ vehicles, manufacturers }: VehiclesPageProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [manufacturers, setManufacturers] = useState<string[]>([]);
-  const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
-  const [minYear, setMinYear] = useState<number>(0);
-  const [maxYear, setMaxYear] = useState<number>(0);
-
+  const [filteredVehicles, setFilteredVehicles] = useState(vehicles);
   const vehiclesPerPage = 10;
 
-  // Récupération initiale des véhicules et fabricants
-  useEffect(() => {
-    const allVehicles = getAllVehicles();
-    const allManufacturers = getAllManufacturers();
+  const handleFilterChange = (newFilter: { manufacturer?: string[]; type?: string; year?: string; sort?: string }) => {
+    const params = new URLSearchParams(searchParams.toString());
 
-    const years = allVehicles.map((v) => v.year);
-    setMinYear(Math.min(...years));
-    setMaxYear(Math.max(...years));
+    Object.entries(newFilter).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        params.delete(key);
+        value.forEach((val) => params.append(key, val));
+      } else if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    });
 
-    setVehicles(allVehicles);
-    setManufacturers(allManufacturers);
-    setFilteredVehicles(allVehicles);
-  }, []);
+    params.set('page', '1');
+    router.push(`/?${params.toString()}`);
+  };
 
-  // Filtrage des véhicules à chaque changement de `searchParams`
-  useEffect(() => {
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', page.toString());
+    router.push(`/?${params.toString()}`);
+  };
+
+  
+  React.useEffect(() => {
     if (vehicles.length === 0) return;
 
-    const manufacturer = searchParams.getAll('manufacturer'); // Plusieurs fabricants
+    const manufacturer = searchParams.getAll('manufacturer');
     const type = searchParams.get('type') || '';
     const year = searchParams.get('year') || '';
     const sort = searchParams.get('sort') || '';
 
     let filtered = vehicles;
 
-    // Appliquer les filtres
     if (manufacturer.length > 0) {
       filtered = filtered.filter((v) => manufacturer.includes(v.manufacturer));
     }
@@ -53,11 +61,10 @@ const VehiclesPage = () => {
     if (type) filtered = filtered.filter((v) => v.type === type);
     if (year) filtered = filtered.filter((v) => v.year === parseInt(year, 10));
 
-    // Appliquer le tri
     if (sort) {
       const [field, order] = sort.split('-');
 
-      if (field && (field in vehicles[0])) {
+      if (field && field in vehicles[0]) {
         filtered = [...filtered].sort((a, b) => {
           const valueA = a[field as keyof Vehicle];
           const valueB = b[field as keyof Vehicle];
@@ -80,41 +87,12 @@ const VehiclesPage = () => {
     setFilteredVehicles(filtered);
   }, [searchParams, vehicles]);
 
-  // Gestion des filtres et pagination
-  const handleFilterChange = (newFilter: { [key: string]: any }) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    Object.entries(newFilter).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        params.delete(key); // Supprimer les anciennes valeurs
-        value.forEach((val) => params.append(key, val));
-      } else if (value) {
-        params.set(key, value); // Définir la nouvelle valeur
-      } else {
-        params.delete(key); // Supprimer la clé si aucune valeur
-      }
-    });
-
-    // Réinitialiser la pagination à la première page
-    params.set('page', '1');
-
-    // Mettre à jour l'URL avec les nouveaux filtres
-    router.push(`/?${params.toString()}`);
-  };
-
-  const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('page', page.toString()); // Mettre à jour la page
-    router.push(`/?${params.toString()}`);
-  };
-
-  // Gestion de la pagination
   const totalPages = Math.ceil(filteredVehicles.length / vehiclesPerPage);
-  const currentPage = Math.min(
+  const pageFromParams = Math.min(
     Math.max(parseInt(searchParams.get('page') || '1', 10), 1),
     totalPages
   );
-  const startIndex = (currentPage - 1) * vehiclesPerPage;
+  const startIndex = (pageFromParams - 1) * vehiclesPerPage;
   const paginatedVehicles = filteredVehicles.slice(
     startIndex,
     startIndex + vehiclesPerPage
@@ -124,13 +102,13 @@ const VehiclesPage = () => {
     <div>
       <FilterSortForm
         manufacturers={manufacturers}
-        minYear={minYear}
-        maxYear={maxYear}
+        minYear={Math.min(...vehicles.map((v) => v.year))}
+        maxYear={Math.max(...vehicles.map((v) => v.year))}
         onFilterChange={handleFilterChange}
       />
       <VehicleTable vehicles={paginatedVehicles} />
       <Pagination
-        currentPage={currentPage}
+        currentPage={pageFromParams}
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />

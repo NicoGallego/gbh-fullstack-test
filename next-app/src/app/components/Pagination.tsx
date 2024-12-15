@@ -21,7 +21,6 @@ interface PaginationProps {
       }
     };
   
-    // Calcul des pages visibles
     const getVisiblePages = () => {
       const pages = [];
   

@@ -1,6 +1,5 @@
 import { Vehicle } from '../../models/vehicle';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface VehicleTableProps {
   vehicles: Vehicle[];
@@ -9,21 +8,20 @@ interface VehicleTableProps {
 const VehicleTable = ({ vehicles }: VehicleTableProps) => {
   return (
     <div className="overflow-x-auto">
-      <table className="table table-fixed w-full">
-        {/* En-tête du Tableau */}
+      <table className="table table-zebra w-full">
         <thead>
-          <tr>
+        <tr>
             <th className="w-1/5">Brand</th>
             <th className="w-1/5">Model</th>
-            <th className="w-1/10">Year</th>
-            <th className="w-1/10">Type</th>
-            <th className="w-1/10">Price</th>
+            <th className="w-1/6">Year</th>
+            <th className="w-1/6">Type</th>
+            <th className="w-1/6">Price</th>
             <th className="w-1/5"></th>
           </tr>
         </thead>
         <tbody>
           {vehicles.map((vehicle) => (
-            <tr key={vehicle.id} className="hover:bg-gray-50">
+            <tr key={vehicle.id}>
               <td>{vehicle.manufacturer}</td>
               <td>{vehicle.model}</td>
               <td>{vehicle.year}</td>
