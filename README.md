@@ -37,15 +37,19 @@ Ensure you have the following installed:
 
 ```bash
    git clone https://github.com/NicoGallego/gbh-fullstack-test.git
+
    cd gbh-fullstack-test
   ```
 
 2. Install dependencies:
 
-  ```bash
+```bash
   If you are using npm:
+
   npm install
+
   If you are using yarn:
+
   yarn install
   ```
 
