@@ -43,22 +43,23 @@ Ensure you have the following installed:
 
 2. Install dependencies:
 
+If you are using npm:
 ```bash
-  If you are using npm:
-
-  npm install
-
-  If you are using yarn:
-
+   npm install
+```
+If you are using yarn:
+```bash
   yarn install
-  ```
+```
 
 3. Run the development server:
 
+If you are using npm:
   ```bash
-  If you are using npm:
   npm run dev
-  If you are using yarn:
+```
+If you are using yarn:
+```bash
   yarn dev
   ```
 
