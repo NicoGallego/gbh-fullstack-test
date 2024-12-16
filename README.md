@@ -1,98 +1,74 @@
 # GBH Technical Test
 
-## Context
-This technical test simulates a real-world development environment where you'll be working as part of a team of 5 developers. We expect you to follow standard team development practices including proper git workflow, clear documentation, and maintainable code. Your work should reflect how you would contribute to a shared codebase.
+[![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://forthebadge.com)
 
-## Objective
-Create a vehicle showcase application using Next.js and a backend of your choice (NestJS or Next.js API Routes). The application should display a list of vehicles with filtering and sorting capabilities.
+# Vehicle Management Application
 
-You can either:
-- Use the provided mock data
-- Implement your own backend with the provided data structure
+This project is a simple **Vehicle Management System** built using **Next.js** and **TailwindCSS**. The app allows users to view a list of vehicles, filter them based on various parameters (such as manufacturer, type, year, etc.), and see detailed information about each vehicle.
 
-## Required Features
-- Responsive design (mobile, tablet, desktop)
-- Display a paginated vehicle list
-- Filter vehicles by manufacturer, type, and year
-- Sort vehicles by price and year
-- Display detailed vehicle information
-- Implement proper git workflow (feature branches, clear commits, PRs)
+## Features
 
-## Data Structure
-```typescript
-interface Vehicle {
-  id: string;
-  manufacturer: string;  // e.g., "BMW", "Tesla", "Toyota"
-  model: string;        // e.g., "X5", "Model 3", "Camry"
-  year: number;
-  type: VehicleType;
-  price: number;
-  fuelType: string;
-  transmission: string;
-  mileage?: number;
-  features: string[];
-  images: string[];
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+- **View Vehicle List**: Display all available vehicles.
+- **Filter and Sort Vehicles**: Users can filter vehicles by manufacturer, type, and year, and sort them by price or year.
+- **Responsive Design**: Optimized for both desktop and mobile views.
+- **Detailed Vehicle Information**: Users can view detailed information about a vehicle, including its price, mileage, and features.
 
-enum VehicleType {
-  SUV = 'SUV',
-  SEDAN = 'SEDAN',
-  TRUCK = 'TRUCK',
-  SPORTS = 'SPORTS',
-  LUXURY = 'LUXURY',
-  ELECTRIC = 'ELECTRIC'
-}
+## Technologies Used
 
-enum FuelType {
-  GASOLINE = 'GASOLINE',
-  DIESEL = 'DIESEL',
-  ELECTRIC = 'ELECTRIC',
-  HYBRID = 'HYBRID',
-  PLUGIN_HYBRID = 'PLUGIN_HYBRID'
-}
-```
+- **Next.js** 
+- **TailwindCSS + DaisyUI**
+- **TypeScript**
 
-## Evaluation Criteria
 
-### Technical Presentation (50%)
-The most important part of the evaluation will be a video call where you'll present:
-- Your technical choices and their justification
-- Architecture decisions
-- Code organization
-- Challenges encountered and solutions
-- Potential improvements and scalability
-- Live demonstration of the application
+## Getting Started
 
-### Code Quality (30%)
-- Clean and maintainable code
-- TypeScript usage
-- Component organization
-- Error handling
-- Testing approach
-- Responsive design implementation
+Follow these steps to get your development environment set up.
 
-### Development Practices (20%)
-- Git workflow
-- Documentation
-- Code organization
-- Commit clarity
+### Prerequisites
 
-## Timeline
-- Expected time: 4-6 hours
-- Technical presentation: 20 minutes + 10 minutes Q&A
+Ensure you have the following installed:
 
-## Presentation Guidelines
-Prepare to discuss:
-1. Technical stack choices
-2. Architecture decisions
-3. State management approach
-4. Data fetching strategy
-5. Performance considerations
-6. Testing strategy
-7. Potential improvements
-8. Scalability considerations
+- **Node.js** (v14 or higher)
+- **npm** (v6 or higher) or **yarn**
 
-Good luck! 🚀
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/NicoGallego/gbh-fullstack-test.git
+   cd gbh-fullstack-test
+  ```
+
+2. Install dependencies:
+
+  ```bash
+  If you are using npm:
+  npm install
+  If you are using yarn:
+  yarn install
+  ```
+
+3. Run the development server:
+
+  ```bash
+  If you are using npm:
+  npm run dev
+  If you are using yarn:
+  yarn dev
+  ```
+
+#### Open your browser and go to http://localhost:3000 to see the app in action.
+
+3. Important Files:
+
+/src/app/vehicles/[id]/page.tsx: Page displaying detailed information of a specific vehicle.
+/src/app/vehicles/page.tsx: Page displaying the list of vehicles with sorting and filtering capabilities.
+/src/utils/dataHandler.ts: Contains functions for fetching and manipulating vehicle data.
+
+4. Usage
+#### Vehicle List Page
+On the main page, you can see the list of available vehicles. You can filter them by manufacturer, type, and year, and sort the list by price or year.
+
+#### Vehicle Detail Page
+Clicking on any vehicle will redirect you to the vehicle details page, where you can see additional information such as price, mileage, fuel type, and features.
